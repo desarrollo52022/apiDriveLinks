@@ -265,6 +265,11 @@ async function main(numSolicitud){
     try {
         //await renewAccessToken();
 
+        console.log(CLIENT_ID,
+          CLIENT_SECRET,
+          REDIRECT_URI,
+          REFRESH_TOKEN);
+
         const resp = await findSubfolderId(numSolicitud);
         console.log(listaLinks);
         return listaLinks;
