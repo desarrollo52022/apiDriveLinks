@@ -4,10 +4,7 @@ npm-debug.log
 yarn-error.log
 package-lock.json
 
-# Archivos generados por tu IDE (ejemplo: Visual Studio Code)
 .vscode/
-
-# Dependiendo de tu editor, puedes agregar más patrones aquí
 
 # Archivos de configuración de entorno local (archivos .env)
 .env

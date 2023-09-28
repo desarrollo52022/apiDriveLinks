@@ -269,7 +269,7 @@ async function main(numSolicitud){
         console.log(listaLinks);
         return listaLinks;
     } catch (error) {
-        console.log(error);
+        throw new error
     }
 }
 

@@ -8,6 +8,8 @@ app.use(express.json());
 
 app.post('/api/LinkList', async (req, res) => {
 
+  try {
+
     const solicitud = req.query.numSolicitud; 
     if(!solicitud){
         return res.status(400).json({error:'Parametro numSolicitud Oblogatorio'})
@@ -16,6 +18,12 @@ app.post('/api/LinkList', async (req, res) => {
     const links = await linkController.main(solicitud);
   
     res.json({links});
+    
+  } catch (error) {
+    res.status(500).json({error})
+  }
+
+  
   });
 
 // Iniciar el servidor
