@@ -1,0 +1,25 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Archivos generados por tu IDE (ejemplo: Visual Studio Code)
+.vscode/
+
+# Dependiendo de tu editor, puedes agregar más patrones aquí
+
+# Archivos de configuración de entorno local (archivos .env)
+.env
+
+# Logs y archivos de registro
+logs/
+*.log
+
+# Archivos de compilación y dependencias de construcción (ejemplo: TypeScript)
+dist/
+build/
+*.tsbuildinfo
+
+# Directorios específicos de desarrollo (opcional)
+__tests__/
