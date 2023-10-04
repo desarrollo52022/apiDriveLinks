@@ -282,5 +282,6 @@ async function main(numSolicitud){
 //generatePublicUrl()
 
 module.exports = {
-  main
+  main,
+  listaLinks
 };
