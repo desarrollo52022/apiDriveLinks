@@ -263,10 +263,16 @@ async function findFolderId() {
 async function main(numSolicitud){
 
     try {
+        
+      listaLinks.length = 0 //limpiar
+
         //await renewAccessToken();
         const resp = await findSubfolderId(numSolicitud);
-        console.log(listaLinks);
+
+        console.log(resp);
+
         return listaLinks;
+
     } catch (error) {
         throw new error
     }

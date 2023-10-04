@@ -16,10 +16,9 @@ app.post('/api/LinkList', async (req, res) => {
     }
     // Llama a la función main del controlador con el parámetro recibido
     const links = await linkController.main(solicitud);
+    
+    return res.status(200).json(links);
 
-    linkController.listaLinks.length = 0 //limpiar lista
-
-    res.json(links);
     
   } catch (error) {
     res.status(500).json({error})
