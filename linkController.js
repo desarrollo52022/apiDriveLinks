@@ -24,7 +24,7 @@ const drive = google.drive({
 })
 
 
-const listaLinks = []
+let listaLinks = []
 
 
 const filePath = path.join(__dirname, 'girasoles.jpg')
@@ -264,7 +264,6 @@ async function main(numSolicitud){
 
     try {
         //await renewAccessToken();
-
         const resp = await findSubfolderId(numSolicitud);
         console.log(listaLinks);
         return listaLinks;
