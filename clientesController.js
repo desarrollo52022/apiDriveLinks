@@ -199,9 +199,29 @@ async function findFolderId() {
   }
 
 
+  async function listFolders(parentId) {
+    try {
+        const listParams = {
+            q: `'${parentId}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false`,
+            fields: 'files(id, name)'
+        };
+
+        const response = await drive.files.list({
+            q: listParams.q,
+            fields: listParams.fields
+        });
+
+        return response.data.files;
+    } catch (error) {
+        
+      throw new Error('Error al listar las carpetas');
+      
+    }
+}
+
 
   async function findSubfolderId(nombreSubcarpeta) {
-    const principalFolderId = '10CPGwrYwOgV4XjyoTWxkrG29Lv9hkeeK'
+    const principalFolderId = '1JhYyWM2eW6Ywq66qlAB579sXL0r4V84a' //Folder Clientes
     try {
         // Busca el ID de la subcarpeta dentro de la carpeta principal
         const subfolderResponse = await drive.files.list({
@@ -215,59 +235,119 @@ async function findFolderId() {
 
           const subfolderId = subfolder.id
 
-            const filesResponse = await drive.files.list({
-                q: `'${subfolderId}' in parents`,
-                fields: 'files(webViewLink, id, name, webContentLink)',
-            });
-  
-            if (filesResponse.data.files.length > 0) {
-                //console.log(`Enlaces de archivos en la subcarpeta '${nombreSubcarpeta}':`);
-                
-                for(const element of filesResponse.data.files)
-                {
-                    const resp = await listFilesInFolder(element.id)
-                    //console.log('ID ', file.id);
-                    //console.log('Name ', element.name);
-                    //console.log('--------------------------');
-                }
-
-                return true
-
-            } else {
-                console.log(`No se encontraron archivos en la subcarpeta '${nombreSubcarpeta}'.`);
-                return false
-            }
+          return subfolderId
 
         } else {
           console.log(`No se encontró la subcarpeta con el nombre '${nombreSubcarpeta}'.`);
-          return false
+          return []
         }
         
     } catch (error) {
       console.error('Error al buscar la subcarpeta: ', error.message);
-      return false
+      return []
     }
   }
-  
-  
 
-async function main(numSolicitud){
+
+
+  async function findSubfolders(subfolderId){
 
     try {
-        
-      listaLinks.length = 0 //limpiar
 
-        //await renewAccessToken();
-        const resp = await findSubfolderId(numSolicitud);
-
-        console.log(resp);
-
-        return listaLinks;
-
+      const filesResponse = await drive.files.list({
+        q: `'${subfolderId}' in parents`,
+        fields: 'files(id, name)',
+      });
+  
+      if (filesResponse.data.files.length > 0) {
+          
+          return filesResponse.data.files
+  
+      } else {
+        console.log(`No se encontraron archivos en la subcarpeta '${nombreSubcarpeta}'.`);
+        return []
+      }
+      
     } catch (error) {
-        throw new error
+      console.log(error);
     }
-}
+   
+  }
+
+
+
+  async function createFolder(name, parentId = null) {
+    try {
+        const fileMetadata = {
+            name: name,
+            mimeType: 'application/vnd.google-apps.folder'
+        };
+
+        if (parentId) {
+            fileMetadata.parents = [parentId];
+        }
+
+        const response = await drive.files.create({
+            resource: fileMetadata,
+            fields: 'id'
+        });
+
+        return response.data.id;
+    } catch (error) {
+        
+      throw error;
+        
+    }
+  }
+
+
+
+
+  async function findFilesinFolder(folderId){
+
+    try {
+
+      const filesResponse = await drive.files.list({
+        q:`'${folderId}' in parents`,
+        fields: 'files(id, name, thumbnailLink, webContentLink, webViewLink)',
+      });
+  
+      if (filesResponse.data.files.length > 0) {
+          
+        return filesResponse.data.files
+  
+      } else {
+        console.log(`No se encontraron archivos en la subcarpeta '${nombreSubcarpeta}'.`);
+        return []
+      }
+      
+    } catch (error) {
+      console.log('Error al buscar los archivos dentro del folder: ', error);
+      throw error
+    }
+   
+  }
+
+  
+  
+
+// async function main(numSolicitud){
+
+//     try {
+        
+//       listaLinks.length = 0 //limpiar
+
+//         //await renewAccessToken();
+//         const resp = await findSubfolderId(numSolicitud);
+
+//         console.log(resp);
+
+//         return listaLinks;
+
+//     } catch (error) {
+//         throw new error
+//     }
+// }
 
 //uploadFiles();
 //deleteFiles()
@@ -279,6 +359,10 @@ async function main(numSolicitud){
 //generatePublicUrl()
 
 module.exports = {
-  main,
-  listaLinks
+  //main,
+  listaLinks,
+  findSubfolderId,
+  createFolder,
+  findSubfolders,
+  findFilesinFolder
 };
