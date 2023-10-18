@@ -225,9 +225,10 @@ async function findFolderId() {
     try {
         // Busca el ID de la subcarpeta dentro de la carpeta principal
         const subfolderResponse = await drive.files.list({
-          q: `name='${nombreSubcarpeta}' and mimeType='application/vnd.google-apps.folder' and '${principalFolderId}' in parents`,
+          q: `name='${nombreSubcarpeta}' and mimeType='application/vnd.google-apps.folder' and '${principalFolderId}' in parents and trashed=false`,
           fields: 'files(id)',
         });
+
   
         if (subfolderResponse.data.files.length > 0) {
           const subfolder = subfolderResponse.data.files[0];
@@ -235,16 +236,20 @@ async function findFolderId() {
 
           const subfolderId = subfolder.id
 
+          //console.log(subfolderId);
+
           return subfolderId
 
         } else {
           console.log(`No se encontró la subcarpeta con el nombre '${nombreSubcarpeta}'.`);
-          return []
+          //return []
         }
+
+
         
     } catch (error) {
-      console.error('Error al buscar la subcarpeta: ', error.message);
-      return []
+      console.log('Error al buscar la subcarpeta: ', error);
+      //return []
     }
   }
 
@@ -264,7 +269,7 @@ async function findFolderId() {
           return filesResponse.data.files
   
       } else {
-        console.log(`No se encontraron archivos en la subcarpeta '${nombreSubcarpeta}'.`);
+        console.log(`No se encontraron archivos en la subcarpeta '${subfolderId}'.`);
         return []
       }
       
