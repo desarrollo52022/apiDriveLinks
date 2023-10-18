@@ -62,6 +62,10 @@ app.get('/api/SubfolderId', async (req, res)=>{
 
     const link = await clientesController.findSubfolderId(name)
 
+    if(link = []){
+      return res.status(400).json({})
+    }
+
     return res.status(200).json(link)
   } catch (error) {
     res.status(500).json({error})
