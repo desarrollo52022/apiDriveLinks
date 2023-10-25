@@ -222,7 +222,7 @@ async function findFolderId() {
 
   async function findSubfolderId(nombreSubcarpeta) {
     const principalFolderId = '1JhYyWM2eW6Ywq66qlAB579sXL0r4V84a' //Folder Clientes
-    try {
+    try { 
         // Busca el ID de la subcarpeta dentro de la carpeta principal
         const subfolderResponse = await drive.files.list({
           q: `name='${nombreSubcarpeta}' and mimeType='application/vnd.google-apps.folder' and '${principalFolderId}' in parents and trashed=false`,

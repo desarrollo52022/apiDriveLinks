@@ -7,6 +7,10 @@ const port = 3000;
 // Middleware para procesar JSON
 app.use(express.json());
 
+app.get('/', async(req, res)=>{
+  return res.status(200).json({})
+})
+
 //ACCIONES PUT
 
 app.get('/api/create', async(req, res)=>{
