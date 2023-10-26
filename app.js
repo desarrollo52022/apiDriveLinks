@@ -1,17 +1,26 @@
 const express = require('express');
 const linkController = require('./linkController');
 const clientesController = require('./clientesController');
+const bodyParser = require('body-parser');
 const app = express();
 const port = 3000; 
 
 // Middleware para procesar JSON
-app.use(express.json());
+app.use(bodyParser.json());
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Permite solicitudes desde cualquier origen
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Métodos HTTP permitidos
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Encabezados permitidos
+  next();
+});
+
 
 app.get('/', async(req, res)=>{
   return res.status(200).json({})
 })
 
-//ACCIONES PUT
+//ACCIONES
 
 app.get('/api/create', async(req, res)=>{
 
@@ -122,7 +131,6 @@ app.post('/api/LinkList', async (req, res) => {
 
   
 });
-
 
 
 
